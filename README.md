@@ -1,29 +1,33 @@
 # Company Invoice Generator
 
-Generate professional company invoices in the browser.
+Generate company invoices from one print template. Details live in a local SQLite file so history only recalls data — it does not store a second copy of the template.
 
-## Features
+## Approach
 
-- Choose a template: Classic, Modern, Minimal, Corporate
-- Upload a company logo
-- Auto-create a unique invoice ID (`INV-YYYYMMDD-SEQRAND`)
-- Line items, tax, discount, currency
-- Print the current invoice
-- Invoice history stored in the browser
-- Open or print any previous invoice
+| Store once | Store per invoice | Never stored |
+|---|---|---|
+| Company name, address, tax ID, logo | Unique invoice ID, dates, notes, tax/discount | HTML/CSS template |
+| Client companies (reused by name) | Line items | Printed PDF pages |
 
-## Run locally
+Open or Print on a past invoice loads rows from SQLite and fills the same Classic / Modern / Minimal / Corporate template.
 
-No build step. Open `index.html` in a browser, or serve the folder:
+## Run
+
+Python 3 only. No extra packages.
 
 ```bash
-python3 -m http.server 8080
+python3 server.py
 ```
 
-Then visit `http://localhost:8080`.
+Open `http://127.0.0.1:8080`.
 
-## Notes
+The database file is created next to the app as `invoices.db`.
 
-- History and company profile (name, logo, tax rate) are saved in `localStorage`.
-- Printing uses the browser print dialog. Choose "Save as PDF" if you need a file.
-- Clearing site data removes invoice history on that browser.
+## API
+
+- `GET /api/bootstrap` — company profile, saved clients, invoice list
+- `POST /api/invoices` — create or update; assigns `INV-YYYYMMDD-###XXXX` if needed
+- `GET /api/invoices?q=` — history
+- `GET /api/invoices/<id>` — full record used to refill the template
+
+Logo is saved on the single `company` row, not duplicated on every invoice.
