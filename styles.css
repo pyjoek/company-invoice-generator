@@ -44,9 +44,9 @@ nav { display: flex; gap: 8px; }
 .panel { background: #fff; padding: 16px; border-radius: 12px; border: 1px solid var(--line); }
 .panel h2 { margin-top: 0; font-size: 1rem; }
 label { display: block; margin: 12px 0 6px; font-size: .78rem; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); }
-input, textarea {
+input, textarea, select {
   width: 100%; margin-bottom: 8px; padding: 8px 10px;
-  border: 1px solid var(--line); border-radius: 8px; font: inherit;
+  border: 1px solid var(--line); border-radius: 8px; font: inherit; background: #fff;
 }
 .row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
 .templates { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
