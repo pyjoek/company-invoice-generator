@@ -12,7 +12,7 @@
       <span class="mark">INV</span>
       <div>
         <h1>Company Invoice Generator</h1>
-        <p>Templates · Logo · Unique IDs · History · Print</p>
+        <p id="dbStatus">Connecting to SQLite…</p>
       </div>
     </div>
     <nav>
@@ -20,13 +20,11 @@
       <button class="tab" data-view="history">Invoice History</button>
     </nav>
   </header>
-
   <main>
     <section id="view-create" class="view">
       <div class="layout">
         <aside class="panel no-print">
           <h2>Invoice settings</h2>
-
           <label>Template</label>
           <div class="templates">
             <button type="button" class="tpl selected" data-template="classic">Classic</button>
@@ -34,44 +32,40 @@
             <button type="button" class="tpl" data-template="minimal">Minimal</button>
             <button type="button" class="tpl" data-template="corporate">Corporate</button>
           </div>
-
-          <label>Company logo</label>
+          <label>Company logo (stored once)</label>
           <input type="file" id="logoFile" accept="image/*" />
           <button type="button" class="ghost" id="clearLogo">Remove logo</button>
-
           <label>From (your company)</label>
           <input id="fromName" placeholder="Company name" />
           <input id="fromAddress" placeholder="Address" />
           <input id="fromEmail" placeholder="Billing email" />
           <input id="fromPhone" placeholder="Phone" />
           <input id="fromTax" placeholder="Tax / VAT number" />
-
+          <label>Recall saved client</label>
+          <select id="clientPick"></select>
           <label>Bill to (client)</label>
           <input id="toName" placeholder="Client company" />
           <input id="toAddress" placeholder="Address" />
           <input id="toEmail" placeholder="Email" />
           <input id="toPhone" placeholder="Phone" />
-
           <label>Dates & terms</label>
           <input type="date" id="issueDate" />
           <input type="date" id="dueDate" />
           <input id="poNumber" placeholder="PO number (optional)" />
           <input id="notes" placeholder="Notes / payment terms" />
-
           <label>Tax % / Discount %</label>
           <div class="row">
             <input type="number" id="taxRate" min="0" step="0.01" value="18" />
             <input type="number" id="discountRate" min="0" step="0.01" value="0" />
           </div>
           <input id="currency" placeholder="Currency code" value="USD" />
-
           <div class="actions">
+            <button type="button" class="ghost" id="newInvoice">Blank invoice</button>
             <button type="button" class="primary" id="saveInvoice">Generate & save</button>
             <button type="button" class="secondary" id="printInvoice">Print invoice</button>
           </div>
-          <p class="hint">Invoice ID is created automatically when you generate.</p>
+          <p class="hint">SQLite stores company, clients, and line items. History only fills this template.</p>
         </aside>
-
         <div class="preview-wrap">
           <article id="invoice" class="invoice template-classic">
             <header class="inv-head">
@@ -84,44 +78,21 @@
               </div>
               <div class="inv-meta">
                 <p class="label">INVOICE</p>
-                <p id="previewId" class="inv-id">Will be assigned on generate</p>
+                <p id="previewId" class="inv-id">Assigned when saved to SQLite</p>
                 <p id="previewDates" class="muted"></p>
               </div>
             </header>
-
             <section class="parties">
-              <div>
-                <p class="label">From</p>
-                <p id="previewFromBlock"></p>
-              </div>
-              <div>
-                <p class="label">Bill to</p>
-                <p id="previewToBlock"></p>
-              </div>
+              <div><p class="label">From</p><p id="previewFromBlock"></p></div>
+              <div><p class="label">Bill to</p><p id="previewToBlock"></p></div>
             </section>
-
             <table class="items">
-              <thead>
-                <tr>
-                  <th>Description</th>
-                  <th>Qty</th>
-                  <th>Unit</th>
-                  <th>Amount</th>
-                  <th class="no-print"></th>
-                </tr>
-              </thead>
+              <thead><tr><th>Description</th><th>Qty</th><th>Unit</th><th>Amount</th><th class="no-print"></th></tr></thead>
               <tbody id="itemsBody"></tbody>
             </table>
-            <p class="no-print">
-              <button type="button" class="ghost" id="addItem">+ Add line item</button>
-            </p>
-
+            <p class="no-print"><button type="button" class="ghost" id="addItem">+ Add line item</button></p>
             <section class="totals">
-              <div class="notes">
-                <p class="label">Notes</p>
-                <p id="previewNotes"></p>
-                <p id="previewPo" class="muted"></p>
-              </div>
+              <div class="notes"><p class="label">Notes</p><p id="previewNotes"></p><p id="previewPo" class="muted"></p></div>
               <table>
                 <tr><td>Subtotal</td><td id="subtotal">0.00</td></tr>
                 <tr><td>Discount</td><td id="discount">0.00</td></tr>
@@ -129,15 +100,11 @@
                 <tr class="grand"><td>Total</td><td id="total">0.00</td></tr>
               </table>
             </section>
-
-            <footer class="inv-foot">
-              <p>Thank you for your business.</p>
-            </footer>
+            <footer class="inv-foot"><p>Thank you for your business.</p></footer>
           </article>
         </div>
       </div>
     </section>
-
     <section id="view-history" class="view hidden">
       <div class="history-bar no-print">
         <h2>Invoice history</h2>
@@ -145,23 +112,13 @@
       </div>
       <div class="table-wrap">
         <table class="history">
-          <thead>
-            <tr>
-              <th>Invoice ID</th>
-              <th>Date</th>
-              <th>From</th>
-              <th>Client</th>
-              <th>Total</th>
-              <th class="no-print">Actions</th>
-            </tr>
-          </thead>
+          <thead><tr><th>Invoice ID</th><th>Date</th><th>From</th><th>Client</th><th>Total</th><th class="no-print">Actions</th></tr></thead>
           <tbody id="historyBody"></tbody>
         </table>
         <p id="historyEmpty" class="muted">No invoices saved yet.</p>
       </div>
     </section>
   </main>
-
   <script src="app.js"></script>
 </body>
 </html>
