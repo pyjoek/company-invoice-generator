@@ -1,0 +1,102 @@
+:root {
+  --ink: #12202b;
+  --muted: #5b6b76;
+  --line: #d7e0e6;
+  --paper: #fff;
+  --bg: #eef3f6;
+  --accent: #0d6e6e;
+  --accent-2: #0a4f4f;
+  font-family: "Segoe UI", system-ui, sans-serif;
+}
+
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--ink); }
+
+.app-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 24px;
+  background: #0d1b22;
+  color: #fff;
+}
+.brand { display: flex; gap: 12px; align-items: center; }
+.mark {
+  background: var(--accent);
+  width: 44px; height: 44px;
+  display: grid; place-items: center;
+  font-weight: 800; border-radius: 8px;
+}
+.app-header h1 { margin: 0; font-size: 1.1rem; }
+.app-header p { margin: 0; color: #9bb0bb; font-size: .8rem; }
+nav { display: flex; gap: 8px; }
+.tab, button {
+  border: 0; cursor: pointer; border-radius: 8px;
+  padding: 8px 12px; font-weight: 600;
+}
+.tab { background: #1b303a; color: #fff; }
+.tab.active { background: var(--accent); }
+.primary { background: var(--accent); color: #fff; }
+.secondary { background: #1b303a; color: #fff; }
+.ghost { background: transparent; border: 1px solid var(--line); color: var(--ink); }
+
+.layout { display: grid; grid-template-columns: 320px 1fr; gap: 20px; padding: 20px; }
+.panel { background: #fff; padding: 16px; border-radius: 12px; border: 1px solid var(--line); }
+.panel h2 { margin-top: 0; font-size: 1rem; }
+label { display: block; margin: 12px 0 6px; font-size: .78rem; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); }
+input, textarea {
+  width: 100%; margin-bottom: 8px; padding: 8px 10px;
+  border: 1px solid var(--line); border-radius: 8px; font: inherit;
+}
+.row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.templates { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+.tpl { background: #f3f6f8; }
+.tpl.selected { background: var(--accent); color: #fff; }
+.actions { display: grid; gap: 8px; margin-top: 12px; }
+.hint { font-size: .8rem; color: var(--muted); }
+
+.preview-wrap { overflow: auto; }
+.invoice {
+  background: var(--paper);
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 36px;
+  border: 1px solid var(--line);
+  min-height: 1000px;
+}
+.inv-head, .parties, .totals { display: flex; justify-content: space-between; gap: 24px; }
+.inv-brand { display: flex; gap: 14px; align-items: center; }
+.inv-brand img { max-height: 72px; max-width: 160px; object-fit: contain; }
+.inv-id { font-weight: 800; font-size: 1.1rem; }
+.label { text-transform: uppercase; letter-spacing: .08em; font-size: .72rem; color: var(--muted); margin: 0 0 6px; }
+.muted { color: var(--muted); }
+.items { width: 100%; border-collapse: collapse; margin-top: 28px; }
+.items th, .items td { border-bottom: 1px solid var(--line); padding: 10px 8px; text-align: left; }
+.items input { margin: 0; }
+.totals { margin-top: 24px; align-items: start; }
+.totals table { min-width: 260px; }
+.totals td { padding: 6px 0; }
+.grand td { font-weight: 800; font-size: 1.1rem; border-top: 2px solid var(--ink); }
+.inv-foot { margin-top: 48px; color: var(--muted); }
+
+.template-classic .inv-meta { text-align: right; }
+.template-modern { border-top: 10px solid var(--accent); }
+.template-modern .inv-head { background: #f4fbfb; margin: -36px -36px 24px; padding: 36px; }
+.template-minimal { box-shadow: none; }
+.template-minimal .inv-id { letter-spacing: .12em; }
+.template-corporate { border-left: 12px solid #0d1b22; }
+.template-corporate .label { color: #0d1b22; }
+
+.hidden { display: none; }
+.history-bar { display: flex; justify-content: space-between; align-items: center; padding: 20px 20px 0; gap: 16px; }
+.history-bar input { max-width: 320px; }
+.table-wrap { padding: 16px 20px 40px; }
+.history { width: 100%; border-collapse: collapse; background: #fff; }
+.history th, .history td { padding: 10px; border-bottom: 1px solid var(--line); text-align: left; }
+
+@media print {
+  .no-print, .app-header, .panel, nav { display: none !important; }
+  body, .preview-wrap, #view-history { background: #fff; }
+  .layout { display: block; padding: 0; }
+  .invoice { border: 0; max-width: none; }
+}
